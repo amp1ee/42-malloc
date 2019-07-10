@@ -2,7 +2,7 @@ NAME = ft_malloc
 
 CFLAGS = -Wall -Wextra -Werror
 ifdef DEBUG
-    CFLAGS += -g
+    CFLAGS += -g -DDEBUG=1
 endif
 
 SRC = $(addprefix src/, main.c)
