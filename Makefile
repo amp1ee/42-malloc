@@ -5,7 +5,7 @@ ifdef DEBUG
     CFLAGS += -g -DDEBUG=1
 endif
 
-SRC = $(addprefix src/, main.c)
+SRC = $(addprefix src/, main.c free.c)
 INC = inc/
 
 all:

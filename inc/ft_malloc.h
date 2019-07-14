@@ -50,6 +50,7 @@ typedef struct          s_area
 void            *get_area(size_t size);
 unsigned        get_pages_amount(size_t page_size, size_t block_size);
 size_t          get_alloc_size(size_t size);
+void            ft_free(void *ptr);
 void            *ft_malloc(size_t size);
 
 #endif

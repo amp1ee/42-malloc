@@ -208,10 +208,10 @@ t_block         get_block(t_block blk, t_area area, size_t size)
     return (blk);
 }
 
-void            mark_block_used(t_block blk)
+/*void            mark_block_used(t_block blk)
 {
     blk->free = false;
-}
+}*/
 
 void            *ft_malloc(size_t size)
 {
@@ -233,7 +233,8 @@ void            *ft_malloc(size_t size)
     blk = get_block(blk, initial_area, size);
     if (blk == NULL)
         return (NULL);
-    mark_block_used(blk);
+    blk->free = false;
+    //mark_block_used(blk);
     return (blk->data);
 }
 
@@ -242,7 +243,8 @@ void            *ft_malloc(size_t size)
 
 int         main(int argc, char **argv)
 {
-    void    *ptr[10];
+    int     q = 24;
+    void    *ptr[q];
     size_t  size;
 
     if (argc > 1)
@@ -250,12 +252,13 @@ int         main(int argc, char **argv)
     else
         return -1;
     int i = 0;
-    while (i < 10)
+    while (i < q)
     {
-        ptr[i] = ft_malloc(size * i * i);
-        printf("ptr[%i] = %p\n", i+1, ptr[i]);
+        ptr[i] = ft_malloc(size  );
+        printf("ptr[%i] = %p\n", i, ptr[i]);
         void *this = ptr[i];
         printf("Size: %zu\n", (((t_block)(this - sizeof(struct s_block)))->size));
+        (i % 3) ? ft_free(ptr[i]) : 0;
         i++;
     }
     // munmap(ptr, ((t_area)ptr)->size + sizeof(struct s_block));
