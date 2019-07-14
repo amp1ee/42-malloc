@@ -5,8 +5,14 @@ ifdef DEBUG
     CFLAGS += -g -DDEBUG=1
 endif
 
-SRC = $(addprefix src/, main.c free.c)
+SRC = $(addprefix src/, malloc.c free.c)
+MAIN ?= src/main.c
+ifneq (,$(findstring libc, $(MAIN)))
+	NAME = ft_malloc.libc
+	CFLAGS += -O0
+endif
+
 INC = inc/
 
 all:
-	gcc $(CFLAGS) $(SRC) -I$(INC) -o $(NAME)
+	gcc $(CFLAGS) $(SRC) $(MAIN) -I$(INC) -o $(NAME)

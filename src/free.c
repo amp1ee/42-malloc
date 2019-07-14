@@ -1,5 +1,35 @@
 #include "ft_malloc.h"
 
+void			unmap_area(t_area area)
+{
+	t_area		next;
+	t_area		prev;
+	t_block		blk;
+
+	if (area != NULL)
+	{
+		next = area->next_area;
+		prev = area->prev_area;
+		blk = (t_block)area->first_block;
+		while (blk != NULL)
+		{
+			if (blk->free == false)
+				return ;
+			blk = blk->next;
+		}
+		if (prev)
+		{
+#ifdef DEBUG
+			printf("Calling munmap for area %p\n", (void *)area);
+#endif
+			munmap(area->curr_area, area->size);
+			prev->next_area = next;
+			if (next)
+				next->prev_area = prev;
+		}
+	}
+}
+
 bool            verify_block(t_block blk)
 {
     t_area      area;
@@ -34,6 +64,12 @@ void            ft_free(void *ptr)
         if (blk->free == true)
             return ;
         else
+		{
+#ifdef DEBUG
+			printf("Freeing blk addr: %p\n", ptr);
+#endif
             blk->free = true;
+			unmap_area((t_area)blk->area);
+		}
     }
 }
