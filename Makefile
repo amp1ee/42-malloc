@@ -5,7 +5,7 @@ ifdef DEBUG
     CFLAGS += -g -DDEBUG=1
 endif
 
-SRC = $(addprefix src/, malloc.c free.c)
+SRC = $(addprefix src/, malloc.c free.c show_alloc_mem.c)
 MAIN ?= src/main.c
 ifneq (,$(findstring libc, $(MAIN)))
 	NAME = ft_malloc.libc

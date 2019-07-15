@@ -13,7 +13,7 @@
 # define ALIGN4(x) (((((x) - 1) >> 2) << 2) + 4)
 # define FT_PROT_RW (PROT_READ | PROT_WRITE)
 # define FT_MAP_DEF (MAP_PRIVATE | MAP_ANON)
-# define MIN_NUM_ALLOCS (200)
+# define MIN_NUM_ALLOCS (100)
 # define TINY_BLOCK (1024)
 # define SMALL_BLOCK (64 * TINY_BLOCK)
 
@@ -39,12 +39,12 @@ typedef struct          s_block
 
 typedef struct          s_area
 {
-    t_block             *first_block;
     size_t              size;
     void                *curr_area;
     void                *next_area;
     void                *prev_area;
-	t_type				type;
+    t_type		type;
+    void                *first_block;
 }                       *t_area;
 
 void            *get_area(size_t size);
@@ -52,5 +52,6 @@ unsigned        get_pages_amount(size_t page_size, size_t block_size);
 size_t          get_alloc_size(size_t size);
 void            ft_free(void *ptr);
 void            *ft_malloc(size_t size);
+void            show_alloc_mem(void);
 
 #endif

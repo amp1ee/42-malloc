@@ -11,7 +11,6 @@ void            init_area(void *ptr, size_t res_size, size_t initial_size)
         area->type = SMALL;
     else
         area->type = LARGE;
-    area->size = res_size;
     area->first_block = ptr + sizeof(struct s_area);
     area->curr_area = ptr;
     area->prev_area = NULL;
@@ -37,13 +36,13 @@ void            *get_new_area(size_t initial_size)
     void        *ptr;
     size_t      alloc_size;
 
-	if (initial_size <= TINY_BLOCK)
-		alloc_size = get_alloc_size(TINY_BLOCK);
+    if (initial_size <= TINY_BLOCK)
+	alloc_size = get_alloc_size(TINY_BLOCK);
     else if (initial_size <= SMALL_BLOCK)
         alloc_size = get_alloc_size(SMALL_BLOCK);
     else
         alloc_size = initial_size + sizeof(struct s_block);
-	alloc_size += sizeof(struct s_area);
+    alloc_size += sizeof(struct s_area);
     ptr = allocate_area(alloc_size);
     if (ptr != NULL)
         init_area(ptr, alloc_size, initial_size);
@@ -114,6 +113,8 @@ t_block         init_block(t_area area, void *blk_ptr, size_t data_size)
 {
     t_block     blk;
 
+    if (blk_ptr == NULL)
+        return (NULL);
     blk = (t_block)blk_ptr;
     blk->area = area;
     blk->size = data_size;
@@ -208,8 +209,7 @@ t_block         get_block(t_block blk, t_area area, size_t size)
             if (cur_area == NULL)
                 return (NULL);
             blk = init_block(cur_area, cur_area->first_block, size);
-            if (blk != NULL)
-                break; //questionable
+            return (blk);
         }
         blk = get_free_block((t_block)cur_area->first_block, size);
         if (blk == NULL)
@@ -220,6 +220,7 @@ t_block         get_block(t_block blk, t_area area, size_t size)
                 cur_area = cur_area->next_area;
         }
     }
+    blk = init_block(cur_area, (void *)blk, size);
     return (blk);
 }
 
@@ -244,7 +245,6 @@ void            *ft_malloc(size_t size)
     if (blk == NULL)
         return (NULL);
     blk->free = false;
-    //mark_block_used(blk);
     return (blk->data);
 }
 
