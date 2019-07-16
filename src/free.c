@@ -19,9 +19,7 @@ void			unmap_area(t_area area)
 		}
 		if (prev)
 		{
-#ifdef DEBUG
-			printf("Calling munmap for area %p\n", (void *)area);
-#endif
+			DEBUG_PRINTF("Calling munmap for area %p\n", (void *)area);
 			munmap(area->curr_area, area->size);
 			prev->next_area = next;
 			if (next)
@@ -64,12 +62,10 @@ void            ft_free(void *ptr)
         if (blk->free == true)
             return ;
         else
-		{
-#ifdef DEBUG
-			printf("Freeing blk addr: %p\n", ptr);
-#endif
+	{
+            DEBUG_PRINTF("Freeing blk addr: %p\n", ptr);
             blk->free = true;
-			unmap_area((t_area)blk->area);
-		}
+	    unmap_area((t_area)blk->area);
+        }
     }
 }

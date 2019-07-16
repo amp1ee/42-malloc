@@ -20,7 +20,7 @@ int main(void)
         small[i] = (char *)ft_malloc(SMALL);
         large[i] = (char *)ft_malloc(LARGE);
         tiny[i] = (char *)ft_malloc(TINY);
-        if (tiny[i] == NULL || small[i] == NULL || large[i] == NULL)
+        if (small[i] == NULL || tiny[i] == NULL || large[i] == NULL)
             return (1);
         j = 0;
         while (j < LARGE)
@@ -34,11 +34,12 @@ int main(void)
     }
 
     printf("TINY:\n%s\n", tiny[i - 1]);
-//  printf("SMALL:\n%s\n", small[i - 1]);
+  //printf("SMALL:\n%s\n", small[i - 1]);
 
     show_alloc_mem();
 
     /* Freeing chunks */
+
     i = 0;
     printf("========= Tiny cleanup:\n");
     while (i < Q)
