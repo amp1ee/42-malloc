@@ -1,16 +1,19 @@
 #include "ft_malloc.h"
 
 #ifdef DEBUG
+# include <string.h>
 void    dbg_printf(const char *func, const char *format, ...)
 {
     va_list     va;
     size_t      max_size = 1024;
     char        msg[max_size];
+	char		*log_fmt;
 
     va_start(va, format);
     vsnprintf(msg, max_size, format, va);
     va_end(va);
-    printf("%s():\t\t\t%s", func, msg);
+	log_fmt = (strlen(func) + 3 >= 16) ? "%s():\t%s" : "%s():\t\t%s";
+    printf(log_fmt, func, msg);
 }
 #endif
 
@@ -105,11 +108,11 @@ t_area          find_area(t_area initial_area, size_t size)
     else if (size <= SMALL_BLOCK)
         type = SMALL;
     else
-        type = LARGE;
+		type = LARGE;
     cur_area = initial_area;
     while (cur_area != NULL)
     {
-        if (cur_area->type == type)
+        if (cur_area->type == type && cur_area->size > size)
             return (cur_area);
         cur_area = cur_area->next_area;
     }
@@ -132,11 +135,12 @@ t_block         init_block(t_area area, void *blk_ptr, size_t data_size)
     return (blk);
 }
 
-t_area          add_new_area(t_area area, size_t size)
+t_area          append_area(t_area area, size_t size)
 {
     t_area      cur_area;
     t_area      next_area;
 
+    DEBUG_PRINTF("<- prev area: %p\n", area);
     if (area == NULL)
         return (NULL);
     cur_area = area;
@@ -148,7 +152,7 @@ t_area          add_new_area(t_area area, size_t size)
         next_area = cur_area->next_area;
         next_area->prev_area = cur_area;
     }
-    DEBUG_PRINTF("new area: %p\n", cur_area->next_area);
+    DEBUG_PRINTF("-> new area: %p\n", cur_area->next_area);
     return (cur_area->next_area);
 }
 
@@ -195,7 +199,7 @@ bool            area_space_enough(t_area area, size_t size)
     return (next_addr <= end_addr);
 }
 
-t_block         add_new_block(t_area area, size_t data_size)
+t_block         append_block(t_area area, size_t data_size)
 {
     t_block     blk_ptr;
     t_block     last;
@@ -204,7 +208,7 @@ t_block         add_new_block(t_area area, size_t data_size)
     blk_ptr = (void *)last + sizeof(struct s_block) + last->size;
     blk_ptr = init_block(area, blk_ptr, data_size);
     last->next = blk_ptr;
-    DEBUG_PRINTF("area: %p, data_size: %zu, last_blk: %p, new_blk: %p, last->size: %zu\n", (void*)area, data_size, (void *)last, last->size);
+    DEBUG_PRINTF("area: %p, data_size: %zu, last_blk: %p, new_blk: %p, last->size: %zu\n", (void*)area, data_size, (void *)last, blk_ptr, last->size);
     return (blk_ptr);
 }
 
@@ -219,7 +223,7 @@ t_block         get_block(t_block blk, t_area area, size_t size)
         DEBUG_PRINTF("find_area returned: %p\n", cur_area);
         if (cur_area == NULL)
         {
-            cur_area = add_new_area(area, size);
+            cur_area = append_area(area, size);
             if (cur_area == NULL)
                 return (NULL);
             blk = init_block(cur_area, cur_area->first_block, size);
@@ -229,12 +233,11 @@ t_block         get_block(t_block blk, t_area area, size_t size)
         if (blk == NULL)
         {
             if (area_space_enough(cur_area, size))
-                blk = add_new_block(cur_area, size);
+                blk = append_block(cur_area, size);
             else
                 cur_area = cur_area->next_area;
         }
     }
-    blk = init_block(cur_area, (void *)blk, size);
     return (blk);
 }
 
@@ -244,9 +247,7 @@ void            *ft_malloc(size_t size)
     t_block     blk;
 
     if (g_addr)
-    {
         initial_area = (t_area)g_addr;
-    }
     else
     {
         initial_area = get_new_area(size);
@@ -260,6 +261,7 @@ void            *ft_malloc(size_t size)
     if (blk == NULL)
         return (NULL);
     blk->free = false;
+	DEBUG_PRINTF("==>> Returning data ptr: %p\n\n", blk->data);
     return (blk->data);
 }
 

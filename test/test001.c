@@ -33,8 +33,8 @@ int main(void)
         i++;
     }
 
-    printf("TINY:\n%s\n", tiny[i - 1]);
-  //printf("SMALL:\n%s\n", small[i - 1]);
+   // printf("TINY:\n%s\n", tiny[i - 1]);
+   // printf("SMALL:\n%s\n", small[i - 1]);
 
     show_alloc_mem();
 
