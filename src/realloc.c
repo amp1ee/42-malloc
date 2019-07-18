@@ -17,6 +17,8 @@ void		*ft_realloc(void *ptr, size_t size)
 	if (ptr == NULL || g_addr == NULL)
 		return (ft_malloc(size));
 	block = (t_block)(ptr - sizeof(struct s_block));
+		if (verify_block(block) == false)
+			return (ft_malloc(size));
 	if (size == 0)
 	{
 		ft_free(block->data);
