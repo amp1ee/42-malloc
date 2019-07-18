@@ -156,11 +156,11 @@ t_area          append_area(t_area area, size_t size)
     return (cur_area->next_area);
 }
 
-t_block         get_free_block(t_block blk, size_t size)
+t_block         get_free_block(void *blk_ptr, size_t size)
 {
     t_block     cur_blk;
 
-    cur_blk = blk;
+    cur_blk = (t_block)blk_ptr;
     while (cur_blk != NULL)
     {
         if (cur_blk->free == true && cur_blk->size >= size)
@@ -181,6 +181,7 @@ t_block         get_last_block(t_area area)
     last = (t_block)area->first_block;
     while (last->next)
         last = last->next;
+	DEBUG_PRINTF("%p\n", last);
     return (last);
 }
 
@@ -229,7 +230,7 @@ t_block         get_block(t_block blk, t_area area, size_t size)
             blk = init_block(cur_area, cur_area->first_block, size);
             return (blk);
         }
-        blk = get_free_block((t_block)cur_area->first_block, size);
+        blk = get_free_block(cur_area->first_block, size);
         if (blk == NULL)
         {
             if (area_space_enough(cur_area, size))
@@ -246,6 +247,8 @@ void            *ft_malloc(size_t size)
     t_area      initial_area;
     t_block     blk;
 
+	if (size == 0)
+		return (NULL);
     if (g_addr)
         initial_area = (t_area)g_addr;
     else

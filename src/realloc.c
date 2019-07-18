@@ -2,12 +2,14 @@
 
 void		copy_data(t_block old, t_block new)
 {
-	ft_memcpy(new->data, old->data, old->size);
+	size_t	res_size;
+
+	res_size = (old->size > new->size) ? new->size : old->size;
+	ft_memcpy(new->data, old->data, res_size);
 }
 
 void		*ft_realloc(void *ptr, size_t size)
 {
-	t_area	initial;
 	t_block	block;
 	t_block	new_blk;
 
@@ -15,12 +17,17 @@ void		*ft_realloc(void *ptr, size_t size)
 	if (ptr == NULL || g_addr == NULL)
 		return (ft_malloc(size));
 	block = (t_block)(ptr - sizeof(struct s_block));
-	initial = (t_area)g_addr;
-	new_blk = get_block(NULL, initial, size);
+	if (size == 0)
+	{
+		ft_free(block->data);
+		return (NULL);
+	}
+	new_blk = get_block(NULL, (t_area)g_addr, size);
 	if (new_blk == NULL)
 		return (NULL);
 	copy_data(block, new_blk);
-	ft_free(block);
+	new_blk->free = false;
+	ft_free(block->data);
 	DEBUG_PRINTF("==>> new: %p\n\n", new_blk->data);
 	return (new_blk->data);
 }
