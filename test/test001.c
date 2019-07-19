@@ -8,7 +8,7 @@
 
 int main(void)
 {
-    size_t      Q = 1;
+    size_t      Q = 1000;
     size_t      i, j;
     char        *tiny[Q];
     char        *small[Q];

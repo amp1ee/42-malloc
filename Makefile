@@ -35,12 +35,15 @@ test: $(NAME)
 	@echo "Run using this command\nLD_LIBRARY_PATH=`pwd` ./malloc_test"
 
 $(NAME): $(OBJ) $(LIBFT)
+	@echo "Linking $(NAME)"
 	@gcc $(OBJ) -o $(NAME) $(LDFLAGS)
 
 $(LNAME): $(NAME)
+	@echo "$(LNAME) -> $(NAME)"
 	@ln -sf $(NAME) $(LNAME)
 
 $(OBJ_D)%.o: $(SRC_D)%.c
+	@echo "Compiling $<"
 	@mkdir -p $(OBJ_D)
 	@gcc $(CFLAGS) -c $< -o $@ -I$(INC_D) -I$(LIBFT_D)
 

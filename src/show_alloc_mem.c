@@ -1,8 +1,6 @@
 #include "ft_malloc.h"
 
-#include <stdint.h>
-
-void			print_ptr(uint64_t ptr)
+void			print_ptr(size_t ptr)
 {
 	char		hex[16];
 	int			h;
@@ -39,18 +37,19 @@ void			print_area(t_area area)
 
 	ft_putstr(types[area->type]);
 	ft_putstr(" : ");
-	print_ptr((uint64_t)area->curr_area);
+	print_ptr((size_t)area->curr_area);
 	ft_putendl("");
 }
 
-void			print_block(t_block block)
+void			print_block(t_block block, size_t *total)
 {
 	size_t		size;
 
 	size = block->size;
-	print_ptr((uint64_t)block);
+        *total += size;
+	print_ptr((size_t)block);
 	ft_putstr(" - ");
-	print_ptr((uint64_t)(block + size));
+	print_ptr((size_t)block + block->size);
 	ft_putstr(" : ");
 	ft_putnbr(size);
 	ft_putendl(" bytes");
@@ -60,7 +59,9 @@ void			show_alloc_mem(void)
 {
 	t_area		area;
 	t_block		block;
+        size_t          total;
 
+        total = 0;
 	area = (t_area)g_addr;
 	while (area != NULL)
 	{
@@ -68,9 +69,12 @@ void			show_alloc_mem(void)
 		block = (t_block)(area->first_block);
 		while (block != NULL)
 		{
-			print_block(block);
+			print_block(block, &total);
 			block = block->next;
 		}
 		area = area->next_area;
 	}
+        ft_putstr("Total : ");
+        ft_putnbr(total);
+        ft_putendl(" bytes");
 }
