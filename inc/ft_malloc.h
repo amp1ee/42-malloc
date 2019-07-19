@@ -5,6 +5,7 @@
 # include <unistd.h>
 # include <sys/mman.h>
 # include <stdbool.h>
+# include "libft.h"
 
 #ifdef DEBUG
 # include <stdio.h>
