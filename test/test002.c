@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 		self_mem_usage(argv[0]);
 		r = rand();
 		size_t r_size = r % LARGE;
-        dptr[i] = (char *)ft_malloc(r_size);
+        dptr[i] = (char *)malloc(r_size);
         if (dptr[i] == NULL)
             return (1);
         j = 0;
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     printf("========= Cleanup:\n");
     while (i < Q)
 	{
-        ft_free(dptr[i++]);
+        free(dptr[i++]);
 		self_mem_usage(argv[0]);
 	}
     return 0;

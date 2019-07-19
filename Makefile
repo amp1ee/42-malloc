@@ -9,6 +9,8 @@ SRC_D := src/
 SRC = $(addprefix $(SRC_D), malloc.c \
 						free.c \
 						realloc.c \
+						areas.c \
+						blocks.c \
 						show_alloc_mem.c)
 
 LIBFT_D := libft/

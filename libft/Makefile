@@ -23,7 +23,7 @@ $(NAME): $(OBJ)
 
 %.o: %.c
 	@printf '\t\tCompiling $(NAME) sources\r'
-	@gcc -Wall -Wextra -Werror -o $@ -c $^
+	@gcc -Wall -Wextra -Werror -fPIC -o $@ -c $^
 
 all: $(NAME)
 

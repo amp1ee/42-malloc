@@ -27,17 +27,17 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 
     i = 0;
-	dptr[0] = ft_malloc(LARGE/2);
-	dptr[0] = ft_realloc(&i, LARGE /2);
-	dptr[0] = ft_realloc(&i, 0);
-	dptr[0] = ft_realloc(NULL, LARGE/2);
+	dptr[0] = malloc(LARGE/2);
+	dptr[0] = realloc(&i, LARGE /2);
+	dptr[0] = realloc(&i, 0);
+	dptr[0] = realloc(NULL, LARGE/2);
     while (i < Q)
     {
 		r = rand();
 		size_t r_size = r % LARGE;
-        dptr[i] = (char *)ft_malloc(r_size);
+        dptr[i] = (char *)malloc(r_size);
 		if (r_size < LARGE / 3)
-			dptr[i] = ft_realloc(dptr[i], r_size / 2);
+			dptr[i] = realloc(dptr[i], r_size / 2);
         if (dptr[i] == NULL)
             return (1);
         j = 0;
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     printf("========= Cleanup:\n");
     while (i < Q)
 	{
-        ft_free(dptr[i++]);
+        free(dptr[i++]);
 	}
 	self_mem_usage(argv[0]);
     return 0;

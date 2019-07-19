@@ -17,9 +17,9 @@ int main(void)
     i = 0;
     while (i < Q)
     {
-        small[i] = (char *)ft_malloc(SMALL);
-        large[i] = (char *)ft_malloc(LARGE);
-        tiny[i] = (char *)ft_malloc(TINY);
+        small[i] = (char *)malloc(SMALL);
+        large[i] = (char *)malloc(LARGE);
+        tiny[i] = (char *)malloc(TINY);
         if (small[i] == NULL || tiny[i] == NULL || large[i] == NULL)
             return (1);
         j = 0;
@@ -43,17 +43,17 @@ int main(void)
     i = 0;
     printf("========= Tiny cleanup:\n");
     while (i < Q)
-        ft_free(tiny[i++]);
+        free(tiny[i++]);
 
     i = 0;
     printf("========= Small cleanup:\n");
     while (i < Q)
-        ft_free(small[i++]);
+        free(small[i++]);
 
     i = 0;
     printf("========= Large cleanup:\n");
     while (i < Q)
-        ft_free(large[i++]);
+        free(large[i++]);
 
     return 0;
 }

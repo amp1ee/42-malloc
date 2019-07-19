@@ -51,15 +51,27 @@ typedef struct			s_area
 	void				*first_block;
 }						*t_area;
 
-void					*get_area(size_t size);
+void					*malloc(size_t size);
+void					*realloc(void *ptr, size_t size);
+void					free(void *ptr);
+
 unsigned				get_pages_amount(size_t page_size, size_t block_size);
 size_t					get_alloc_size(size_t size);
-void					ft_free(void *ptr);
-void					*ft_malloc(size_t size);
 void					show_alloc_mem(void);
-void					*ft_realloc(void *ptr, size_t size);
-void					*ft_memcpy(void *dst, const void *src, size_t n);
-t_block					get_block(t_block blk, t_area area, size_t size);
+
 bool					verify_block(t_block blk);
+t_block					init_block(t_area area, void *blk_ptr, size_t datasize);
+t_block					get_free_block(t_area area, size_t size);
+t_block					get_last_block(t_area area);
+t_block					append_block(t_area area, size_t data_size);
+t_block					get_block(t_block blk, t_area area, size_t size);
+
+void					init_area(void *ptr, size_t res_size,
+									size_t initial_size);
+void					*allocate_area(size_t size);
+void					*get_new_area(size_t initial_size);
+t_area					find_area(t_area initial_area, size_t size);
+t_area					append_area(t_area area, size_t size);
+bool					area_space_enough(t_area area, size_t size);
 
 #endif

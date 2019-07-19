@@ -1,6 +1,34 @@
 #include "ft_malloc.h"
 
-#include <stdio.h> //disinclude
+#include <stdint.h>
+
+void			print_ptr(uint64_t ptr)
+{
+	char		hex[16];
+	int			h;
+	int			i;
+
+	ft_putstr("0x");
+	ft_bzero(hex, 16);
+	i = 0;
+	while (ptr)
+	{
+		h = ptr % 16;
+		if (h < 10)
+			hex[i] = h + '0';
+		else
+			hex[i] = h + 'a' - 10;
+		ptr /= 16;
+		i++;
+	}
+	while (i >= 0)
+	{
+		if (hex[i])
+			ft_putchar(hex[i]);
+		i--;
+	}
+}
+
 void			print_area(t_area area)
 {
 	static char *types[] = {
@@ -9,13 +37,10 @@ void			print_area(t_area area)
 		"LARGE"
 	};
 
-/*
 	ft_putstr(types[area->type]);
 	ft_putstr(" : ");
-	ft_putnbr((int)area->curr_area);
+	print_ptr((uint64_t)area->curr_area);
 	ft_putendl("");
-*/
-	printf("%s : %p\n", types[area->type], area->curr_area);
 }
 
 void			print_block(t_block block)
@@ -23,7 +48,12 @@ void			print_block(t_block block)
 	size_t		size;
 
 	size = block->size;
-	printf("%p - %p : %zu bytes\n", (void *)block, (void *)(block + size), size);
+	print_ptr((uint64_t)block);
+	ft_putstr(" - ");
+	print_ptr((uint64_t)(block + size));
+	ft_putstr(" : ");
+	ft_putnbr(size);
+	ft_putendl(" bytes");
 }
 
 void			show_alloc_mem(void)
