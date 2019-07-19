@@ -7,15 +7,6 @@
 # include <stdbool.h>
 # include "libft.h"
 
-#ifdef DEBUG
-# include <stdio.h>
-# include <stdarg.h>
-void	dbg_printf(const char *func, const char *format, ...);
-# define DEBUG_PRINTF(...) dbg_printf(__func__, __VA_ARGS__)
-#else
-# define DEBUG_PRINTF(...)
-#endif
-
 # define ALIGN4(x)		(((((x) - 1) >> 2) << 2) + 4)
 # define FT_PROT_RW		(PROT_READ | PROT_WRITE)
 # define FT_MAP_DEF		(MAP_PRIVATE | MAP_ANON)

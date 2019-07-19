@@ -13,7 +13,6 @@ void		*realloc(void *ptr, size_t size)
 	t_block	block;
 	t_block	new_blk;
 
-	DEBUG_PRINTF("<= old: %p, new size: %zu\n", ptr, size);
 	if (ptr == NULL || g_addr == NULL)
 		return (malloc(size));
 	block = (t_block)(ptr - sizeof(struct s_block));
@@ -30,6 +29,5 @@ void		*realloc(void *ptr, size_t size)
 	copy_data(block, new_blk);
 	new_blk->free = false;
 	free(block->data);
-	DEBUG_PRINTF("==>> new: %p\n\n", new_blk->data);
 	return (new_blk->data);
 }

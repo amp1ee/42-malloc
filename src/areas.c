@@ -16,16 +16,13 @@ void			init_area(void *ptr, size_t res_size, size_t initial_size)
 	area->prev_area = NULL;
 	area->next_area = NULL;
 	area->size = res_size;
-	DEBUG_PRINTF("area: %p, type: %d, 1st_blk: %p, area_size: %zu\n", ptr, area->type, area->first_block, area->size);
 }
 
 void			*allocate_area(size_t size)
 {
 	void		*ptr;
 
-	DEBUG_PRINTF("Calling mmap of size: %zu\n", size);
 	ptr = mmap(NULL, size, FT_PROT_RW, FT_MAP_DEF, -1, 0);
-	DEBUG_PRINTF("Got addr: %p\n", ptr);
 	if (ptr == MAP_FAILED)
 		return (NULL);
 	return (ptr);
@@ -43,7 +40,6 @@ void			*get_new_area(size_t initial_size)
 	else
 		alloc_size = initial_size + sizeof(struct s_block);
 	alloc_size += sizeof(struct s_area);
-	DEBUG_PRINTF("initial_size: %zu\n", initial_size);
 	ptr = allocate_area(alloc_size);
 	if (ptr != NULL)
 		init_area(ptr, alloc_size, initial_size);
@@ -76,7 +72,6 @@ t_area			append_area(t_area area, size_t size)
 	t_area		cur_area;
 	t_area		next_area;
 
-	DEBUG_PRINTF("<- prev area: %p\n", area);
 	if (area == NULL)
 		return (NULL);
 	cur_area = area;
@@ -88,6 +83,5 @@ t_area			append_area(t_area area, size_t size)
 		next_area = cur_area->next_area;
 		next_area->prev_area = cur_area;
 	}
-	DEBUG_PRINTF("-> new area: %p\n", cur_area->next_area);
 	return (cur_area->next_area);
 }
