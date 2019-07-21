@@ -5,6 +5,7 @@
 # include <unistd.h>
 # include <sys/mman.h>
 # include <stdbool.h>
+# include <pthread.h>
 # include "libft.h"
 
 # define FT_PROT_RW		(PROT_READ | PROT_WRITE)
@@ -14,6 +15,7 @@
 # define SMALL_BLOCK	(4096)
 
 void					*g_addr;
+extern pthread_mutex_t	g_lock;
 
 typedef enum			e_type
 {

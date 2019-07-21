@@ -63,6 +63,7 @@ void			show_alloc_mem(void)
 	t_block		block;
 	size_t		total;
 
+	pthread_mutex_lock(&g_lock);
 	total = 0;
 	if (g_addr != NULL)
 		sort_areas((t_area *)&g_addr);
@@ -82,4 +83,5 @@ void			show_alloc_mem(void)
 	ft_putstr("Total : ");
 	ft_putnbr(total);
 	ft_putendl(" bytes");
+	pthread_mutex_unlock(&g_lock);
 }

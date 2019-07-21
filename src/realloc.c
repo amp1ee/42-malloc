@@ -23,11 +23,13 @@ void		*realloc(void *ptr, size_t size)
 		free(block->data);
 		return (NULL);
 	}
+	pthread_mutex_lock(&g_lock);
 	new_blk = get_block((t_area)g_addr, size);
 	if (new_blk == NULL)
 		return (NULL);
 	copy_data(block, new_blk);
 	new_blk->free = false;
+	pthread_mutex_unlock(&g_lock);
 	free(block->data);
 	return (new_blk->data);
 }
