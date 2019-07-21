@@ -1,13 +1,13 @@
 #include <stdlib.h>
 #include "../inc/ft_malloc.h"
 
-#define TINY    (1024)
-#define SMALL   (64 * TINY)
-#define LARGE   (2 * SMALL)
+#define TINY    (TINY_BLOCK)
+#define SMALL   (SMALL_BLOCK)
+#define LARGE   (8 * SMALL)
 
 int main(void)
 {
-    size_t      Q = 1000;
+    size_t      Q = 10;
     size_t      i, j;
     char        *tiny[Q];
     char        *small[Q];
@@ -31,22 +31,26 @@ int main(void)
         }
         i++;
     }
-
+	ft_putstr("orig\n");
     show_alloc_mem();
 
     /* Freeing chunks */
-
+	
     i = 0;
     while (i < Q)
         free(tiny[i++]);
-
+	ft_putstr("\nfreed tinies\n");
+	show_alloc_mem();
     i = 0;
     while (i < Q)
         free(small[i++]);
-
+	ft_putstr("\nfreed smalls\n");
+	show_alloc_mem();
     i = 0;
     while (i < Q)
         free(large[i++]);
+	ft_putstr("\nfreed all\n");
+	show_alloc_mem();
 
     return 0;
 }

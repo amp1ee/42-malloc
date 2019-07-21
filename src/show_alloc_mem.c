@@ -64,7 +64,8 @@ void			show_alloc_mem(void)
 	size_t		total;
 
 	total = 0;
-	sort_areas((t_area *)&g_addr);
+	if (g_addr != NULL)
+		sort_areas((t_area *)&g_addr);
 	area = (t_area)g_addr;
 	while (area != NULL)
 	{

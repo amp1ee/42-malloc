@@ -3,9 +3,9 @@
 #include "../inc/ft_malloc.h"
 #include <time.h>
 
-#define TINY    (1024)
-#define SMALL   (64 * TINY)
-#define LARGE   (2 * SMALL)
+#define TINY    (TINY_BLOCK)
+#define SMALL   (SMALL_BLOCK)
+#define LARGE   (8 * SMALL)
 
 void	self_mem_usage(char *self_name)
 {

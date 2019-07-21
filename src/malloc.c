@@ -74,7 +74,7 @@ void			*malloc(size_t size)
 		g_addr = (void *)initial_area;
 	}
 	blk = NULL;
-	blk = get_block(blk, initial_area, size);
+	blk = get_block(initial_area, size);
 	if (blk == NULL)
 		return (NULL);
 	blk->free = false;

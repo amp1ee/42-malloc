@@ -17,13 +17,13 @@ void			unmap_area(t_area area)
 				return ;
 			blk = blk->next;
 		}
+		munmap(area->curr_area, area->size);
 		if (prev)
-		{
-			munmap(area->curr_area, area->size);
 			prev->next_area = (void *)next;
-			if (next)
-				next->prev_area = (void *)prev;
-		}
+		else
+			g_addr = next;
+		if (next)
+			next->prev_area = (void *)prev;
 	}
 }
 

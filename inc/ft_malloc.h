@@ -9,9 +9,9 @@
 
 # define FT_PROT_RW		(PROT_READ | PROT_WRITE)
 # define FT_MAP_DEF		(MAP_PRIVATE | MAP_ANON)
-# define MIN_NUM_ALLOCS (100)
-# define TINY_BLOCK		(1024)
-# define SMALL_BLOCK	(64 * TINY_BLOCK)
+# define MIN_NUM_ALLOCS (128)
+# define TINY_BLOCK		(512)
+# define SMALL_BLOCK	(4096)
 
 void					*g_addr;
 
@@ -57,7 +57,7 @@ t_block					init_block(t_area area, void *blk_ptr, size_t datasize);
 t_block					get_free_block(t_area area, size_t size);
 t_block					get_last_block(t_area area);
 t_block					append_block(t_area area, size_t data_size);
-t_block					get_block(t_block blk, t_area area, size_t size);
+t_block					get_block(t_area area, size_t size);
 
 void					init_area(void *ptr, size_t res_size,
 									size_t initial_size);

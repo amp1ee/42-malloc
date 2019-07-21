@@ -15,22 +15,6 @@ t_block			init_block(t_area area, void *blk_ptr, size_t datasize)
 	return (blk);
 }
 
-t_block			get_free_block(t_area area, size_t size)
-{
-	t_block		cur_blk;
-
-	cur_blk = (t_block)area->first_block;
-	while (cur_blk != NULL)
-	{
-		if (cur_blk->free == true && cur_blk->size >= size)
-		{
-			return (init_block(area, cur_blk, size));
-		}
-		cur_blk = cur_blk->next;
-	}
-	return (NULL);
-}
-
 t_block			get_last_block(t_area area)
 {
 	t_block		last;
@@ -53,11 +37,31 @@ t_block			append_block(t_area area, size_t data_size)
 	return (blk_ptr);
 }
 
-t_block			get_block(t_block blk, t_area area, size_t size)
+t_block			get_free_block(t_area area, size_t size)
+{
+	t_block		cur_blk;
+
+	cur_blk = (t_block)area->first_block;
+	while (cur_blk != NULL)
+	{
+		if (cur_blk->free == true && cur_blk->size >= size)
+		{
+			return (init_block(area, cur_blk, size));
+		}
+		cur_blk = cur_blk->next;
+	}
+	if (area_space_enough(area, size))
+		return (append_block(area, size));
+	return (NULL);
+}
+
+t_block			get_block(t_area area, size_t size)
 {
 	t_area		cur_area;
+	t_block		blk;
 
 	cur_area = area;
+	blk = NULL;
 	while (blk == NULL)
 	{
 		cur_area = find_area(cur_area, size);
@@ -70,13 +74,7 @@ t_block			get_block(t_block blk, t_area area, size_t size)
 			return (blk);
 		}
 		blk = get_free_block(cur_area, size);
-		if (blk == NULL)
-		{
-			if (area_space_enough(cur_area, size))
-				blk = append_block(cur_area, size);
-			else
-				cur_area = cur_area->next_area;
-		}
+		cur_area = cur_area->next_area;
 	}
 	return (blk);
 }

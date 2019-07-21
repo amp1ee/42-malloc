@@ -62,7 +62,7 @@ void			sort_areas(t_area *start)
 {
 	t_area		min;
 
-	if ((*start)->next_area == NULL || *start == NULL)
+	if (*start == NULL || (*start)->next_area == NULL)
 		return ;
 	min = find_min(*start);
 	swap_areas(*start, min, start);

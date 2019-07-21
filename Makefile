@@ -24,6 +24,9 @@ OBJ := $(SRC:$(SRC_D)%.c=$(OBJ_D)%.o)
 INC_D := inc/
 
 CFLAGS := -Wall -Wextra -Werror -fPIC
+ifdef DEBUG
+	CFLAGS += -g
+endif
 LDFLAGS := -lft -L$(LIBFT_D) -shared -Wl,-soname,$(LNAME)
 
 MAIN ?= test/test001.c

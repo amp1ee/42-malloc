@@ -4,7 +4,7 @@
 
 #define TINY    (TINY_BLOCK)
 #define SMALL   (SMALL_BLOCK)
-#define LARGE   (32 * SMALL)
+#define LARGE   (8 * SMALL)
 
 #include <sys/time.h>
 #include <sys/resource.h>

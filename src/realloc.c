@@ -23,7 +23,7 @@ void		*realloc(void *ptr, size_t size)
 		free(block->data);
 		return (NULL);
 	}
-	new_blk = get_block(NULL, (t_area)g_addr, size);
+	new_blk = get_block((t_area)g_addr, size);
 	if (new_blk == NULL)
 		return (NULL);
 	copy_data(block, new_blk);
