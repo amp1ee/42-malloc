@@ -28,24 +28,18 @@ void			*allocate_area(size_t size)
 	return (ptr);
 }
 
-void			*get_new_area(size_t initial_size)
+bool			area_space_enough(t_area area, size_t size)
 {
-	void		*ptr;
-	size_t		alloc_size;
-	size_t		page_size;
+	t_block		last_blk;
+	void		*end_last_blk;
+	void		*end_addr;
+	void		*next_addr;
 
-	page_size = getpagesize();
-	if (initial_size <= TINY_BLOCK)
-		alloc_size = get_alloc_size(TINY_BLOCK, page_size);
-	else if (initial_size <= SMALL_BLOCK)
-		alloc_size = get_alloc_size(SMALL_BLOCK, page_size);
-	else
-		alloc_size = initial_size + sizeof(struct s_block);
-	alloc_size += sizeof(struct s_area);
-	ptr = allocate_area(alloc_size);
-	if (ptr != NULL)
-		init_area(ptr, alloc_size, initial_size);
-	return (ptr);
+	last_blk = get_last_block(area);
+	end_last_blk = (void *)last_blk + sizeof(struct s_block) + last_blk->size;
+	end_addr = area->curr_area + area->size;
+	next_addr = end_last_blk + sizeof(struct s_block) + size;
+	return (next_addr <= end_addr);
 }
 
 t_area			find_area(t_area initial_area, size_t size)

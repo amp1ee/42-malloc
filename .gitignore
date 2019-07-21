@@ -1,3 +1,6 @@
 ft_malloc
 obj/*
+libft/*.o
 .*
+*.so
+*.a

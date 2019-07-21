@@ -1,6 +1,6 @@
 #include "ft_malloc.h"
 
-void			print_ptr(size_t ptr)
+static void		print_ptr(size_t ptr)
 {
 	char		hex[16];
 	int			h;
@@ -29,87 +29,10 @@ void			print_ptr(size_t ptr)
 	}
 }
 
-t_area			find_min(t_area area) {
-	t_area		cur;
-	t_area		min;
-
-	min = area;
-	if (area != NULL)
-	{
-		cur = area->next_area;
-		while (cur != NULL)
-		{
-			if ((size_t)min > (size_t)cur)
-					min = cur;
-			cur = cur->next_area;
-		}
-	}
-	return (min);
-}
-
-void			swap_areas(t_area p1, t_area p2, t_area *start)
-{
-	t_area p1pre = NULL;
-	t_area p1curr = *start;
-
-	while (p1curr != p1)
-	{
-		p1pre = p1curr;
-		p1curr = p1curr->next_area;
-	}
-	t_area p2pre = NULL;
-	t_area p2curr = *start;
-	while (p2curr != p2)
-	{
-		p2pre = p2curr;
-		p2curr = p2curr->next_area;
-	}
-	if (p1pre != NULL)
-	{
-		p1pre->next_area = p2curr;
-		p2curr->prev_area = p1pre;
-	}
-	else
-	{
-		*start = p2curr;
-		(*start)->prev_area = NULL;
-	}
-	if (p2pre != NULL)
-	{
-		p2pre->next_area = p1curr;
-		p1curr->prev_area = p2pre;
-	}
-	else
-	{
-		*start = p1curr;
-		(*start)->prev_area = NULL;
-	}
-
-	t_area temp = p2curr->next_area;
-	p2curr->next_area = p1curr->next_area;
-	p1curr->next_area = temp;
-
-	if (p2curr->next_area != NULL)
-		((t_area)(p2curr->next_area))->prev_area = p2curr;
-	if (p1curr->next_area != NULL)
-		((t_area)(p1curr->next_area))->prev_area = p1curr;
-}
-
-void			sort_areas(t_area *start) {
-	t_area		min;
-
-	if ((*start)->next_area == NULL || *start == NULL)
-		return ;
-	min = find_min(*start);
-	swap_areas(*start, min, start);
-	sort_areas((t_area *)&((*start)->next_area));
-}
-
-
-void			print_area(t_area area)
+static void		print_area(t_area area)
 {
 	const char	*types[] = {
-		"TINY",
+		"TINY ",
 		"SMALL",
 		"LARGE"
 	};
@@ -120,7 +43,7 @@ void			print_area(t_area area)
 	ft_putendl("");
 }
 
-void			print_block(t_block block, size_t *total)
+static void		print_block(t_block block, size_t *total)
 {
 	size_t		size;
 

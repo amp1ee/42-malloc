@@ -9,8 +9,10 @@ SRC_D := src/
 SRC = $(addprefix $(SRC_D), malloc.c \
 						free.c \
 						realloc.c \
+						calloc.c \
 						areas.c \
 						blocks.c \
+						sort_areas.c \
 						show_alloc_mem.c)
 
 LIBFT_D := libft/
@@ -22,7 +24,7 @@ OBJ := $(SRC:$(SRC_D)%.c=$(OBJ_D)%.o)
 INC_D := inc/
 
 CFLAGS := -Wall -Wextra -Werror -fPIC
-LDFLAGS := -lft -L$(LIBFT_D) -shared
+LDFLAGS := -lft -L$(LIBFT_D) -shared -Wl,-soname,$(LNAME)
 
 MAIN ?= test/test001.c
 

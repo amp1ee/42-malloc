@@ -7,7 +7,6 @@
 # include <stdbool.h>
 # include "libft.h"
 
-# define ALIGN4(x)		(((((x) - 1) >> 2) << 2) + 4)
 # define FT_PROT_RW		(PROT_READ | PROT_WRITE)
 # define FT_MAP_DEF		(MAP_PRIVATE | MAP_ANON)
 # define MIN_NUM_ALLOCS (100)
@@ -44,11 +43,14 @@ typedef struct			s_area
 
 void					*malloc(size_t size);
 void					*realloc(void *ptr, size_t size);
+void					*calloc(size_t count, size_t size);
 void					free(void *ptr);
 
 unsigned				get_pages_amount(size_t block_size, size_t page_size);
+size_t					align_size(size_t size, size_t page_size);
 size_t					get_alloc_size(size_t size, size_t page_size);
 void					show_alloc_mem(void);
+void					sort_areas(t_area *start);
 
 bool					verify_block(t_block blk);
 t_block					init_block(t_area area, void *blk_ptr, size_t datasize);
