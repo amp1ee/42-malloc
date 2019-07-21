@@ -32,11 +32,13 @@ void			*get_new_area(size_t initial_size)
 {
 	void		*ptr;
 	size_t		alloc_size;
+	size_t		page_size;
 
+	page_size = getpagesize();
 	if (initial_size <= TINY_BLOCK)
-	alloc_size = get_alloc_size(TINY_BLOCK);
+		alloc_size = get_alloc_size(TINY_BLOCK, page_size);
 	else if (initial_size <= SMALL_BLOCK)
-		alloc_size = get_alloc_size(SMALL_BLOCK);
+		alloc_size = get_alloc_size(SMALL_BLOCK, page_size);
 	else
 		alloc_size = initial_size + sizeof(struct s_block);
 	alloc_size += sizeof(struct s_area);

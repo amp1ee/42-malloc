@@ -50,7 +50,6 @@ int main(int argc, char *argv[])
 
     /* Freeing chunks */
     i = 0;
-    printf("========= Cleanup:\n");
     while (i < Q)
 	{
         free(dptr[i++]);

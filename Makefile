@@ -26,13 +26,13 @@ LDFLAGS := -lft -L$(LIBFT_D) -shared
 
 MAIN ?= test/test001.c
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test
 
 all: $(NAME) $(LNAME)
 
 test: $(NAME)
-	@gcc -I$(INC_D) -I$(LIBFT_D) $(MAIN) -o malloc_test -lft_malloc -L.
-	@echo "Run using this command\nLD_LIBRARY_PATH=`pwd` ./malloc_test"
+	@gcc -g -I$(INC_D) -I$(LIBFT_D) $(MAIN) -o $(basename $(MAIN)) -lft_malloc -L.
+	@echo "Run using this command\nLD_LIBRARY_PATH=`pwd` $(basename $(MAIN))"
 
 $(NAME): $(OBJ) $(LIBFT)
 	@echo "Linking $(NAME)"

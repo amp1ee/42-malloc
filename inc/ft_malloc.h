@@ -34,10 +34,10 @@ typedef struct			s_block
 
 typedef struct			s_area
 {
-	size_t				size;
 	void				*curr_area;
 	void				*next_area;
 	void				*prev_area;
+	size_t				size;
 	t_type				type;
 	void				*first_block;
 }						*t_area;
@@ -46,8 +46,8 @@ void					*malloc(size_t size);
 void					*realloc(void *ptr, size_t size);
 void					free(void *ptr);
 
-unsigned				get_pages_amount(size_t page_size, size_t block_size);
-size_t					get_alloc_size(size_t size);
+unsigned				get_pages_amount(size_t block_size, size_t page_size);
+size_t					get_alloc_size(size_t size, size_t page_size);
 void					show_alloc_mem(void);
 
 bool					verify_block(t_block blk);

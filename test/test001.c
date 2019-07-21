@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "../inc/ft_malloc.h"
 
@@ -33,25 +32,19 @@ int main(void)
         i++;
     }
 
-   // printf("TINY:\n%s\n", tiny[i - 1]);
-   // printf("SMALL:\n%s\n", small[i - 1]);
-
     show_alloc_mem();
 
     /* Freeing chunks */
 
     i = 0;
-    printf("========= Tiny cleanup:\n");
     while (i < Q)
         free(tiny[i++]);
 
     i = 0;
-    printf("========= Small cleanup:\n");
     while (i < Q)
         free(small[i++]);
 
     i = 0;
-    printf("========= Large cleanup:\n");
     while (i < Q)
         free(large[i++]);
 

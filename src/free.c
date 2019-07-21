@@ -8,9 +8,9 @@ void			unmap_area(t_area area)
 
 	if (area != NULL)
 	{
-		next = area->next_area;
-		prev = area->prev_area;
-		blk = (t_block)area->first_block;
+		next = (t_area)(area->next_area);
+		prev = (t_area)(area->prev_area);
+		blk = (t_block)(area->first_block);
 		while (blk != NULL)
 		{
 			if (blk->free == false)
@@ -20,9 +20,9 @@ void			unmap_area(t_area area)
 		if (prev)
 		{
 			munmap(area->curr_area, area->size);
-			prev->next_area = next;
+			prev->next_area = (void *)next;
 			if (next)
-				next->prev_area = prev;
+				next->prev_area = (void *)prev;
 		}
 	}
 }
@@ -37,7 +37,7 @@ bool			verify_block(t_block blk)
 	area = (t_area)g_addr;
 	while (area != NULL)
 	{
-		cur_blk = (t_block)area->first_block;
+		cur_blk = (t_block)(area->first_block);
 		while (cur_blk)
 		{
 			if (cur_blk == blk)
@@ -48,6 +48,7 @@ bool			verify_block(t_block blk)
 	}
 	return (false);
 }
+
 
 void			free(void *ptr)
 {

@@ -1,6 +1,6 @@
 #include "ft_malloc.h"
 
-unsigned		get_pages_amount(size_t page_size, size_t block_size)
+unsigned		get_pages_amount(size_t block_size, size_t page_size)
 {
 	unsigned	num_pages;
 	unsigned	num_allocs;
@@ -8,7 +8,8 @@ unsigned		get_pages_amount(size_t page_size, size_t block_size)
 	num_allocs = 0;
 	num_pages = 0;
 
-	//!!! if block_size && page_size > 0
+	if (block_size == 0 || page_size == 0)
+		return (0);
 	while (num_allocs < MIN_NUM_ALLOCS)
 	{
 		num_pages++;
@@ -17,14 +18,12 @@ unsigned		get_pages_amount(size_t page_size, size_t block_size)
 	return (num_pages);
 }
 
-size_t			get_alloc_size(size_t size)
+size_t			get_alloc_size(size_t size, size_t page_size)
 {
 	size_t		alloc_size;
-	size_t		page_size;
 	unsigned	pages_num;
 
-	page_size = getpagesize();
-	pages_num = get_pages_amount(page_size, size + sizeof(struct s_block));
+	pages_num = get_pages_amount(size + sizeof(struct s_block), page_size);
 	alloc_size = pages_num * page_size;
 	return (alloc_size);
 }
