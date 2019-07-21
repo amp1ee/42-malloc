@@ -1,6 +1,6 @@
 #include "ft_malloc.h"
 
-pthread_mutex_t	g_lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t	g_lock = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 
 size_t			align_size(size_t size, size_t page_size)
 {
@@ -58,20 +58,15 @@ void			*get_new_area(size_t initial_size)
 	return (ptr);
 }
 
-void			*unlock_and_return(void *ptr)
-{
-	pthread_mutex_unlock(&g_lock);
-	return (ptr);
-}
-
-void			*malloc(size_t size)
+void			*ft_malloc(size_t size)
 {
 	t_area		initial_area;
 	t_block		blk;
 
-	if (size == 0)
-		return (NULL);
 	pthread_mutex_lock(&g_lock);
+/*	if (size == 0)
+		return (unlock_and_return(NULL));*/
+	size = align_size(size, 16);
 	if (g_addr)
 		initial_area = (t_area)g_addr;
 	else

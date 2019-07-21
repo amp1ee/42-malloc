@@ -6,7 +6,6 @@ void			unmap_area(t_area area)
 	t_area		prev;
 	t_block		blk;
 
-	pthread_mutex_lock(&g_lock);
 	if (area != NULL)
 	{
 		next = (t_area)(area->next_area);
@@ -26,7 +25,6 @@ void			unmap_area(t_area area)
 		if (next)
 			next->prev_area = (void *)prev;
 	}
-	pthread_mutex_unlock(&g_lock);
 }
 
 bool			verify_block(t_block blk)
@@ -36,7 +34,6 @@ bool			verify_block(t_block blk)
 
 	if (blk == NULL)
 		return (false);
-	pthread_mutex_lock(&g_lock);
 	area = (t_area)g_addr;
 	while (area != NULL)
 	{
@@ -49,25 +46,25 @@ bool			verify_block(t_block blk)
 		}
 		area = area->next_area;
 	}
-	pthread_mutex_unlock(&g_lock);
 	return (false);
 }
 
-void			free(void *ptr)
+void			ft_free(void *ptr)
 {
 	t_block		blk;
 
-	if (g_addr == NULL || ptr == NULL)
-		return ;
-	blk = (t_block)(ptr - sizeof(struct s_block));
-	if (verify_block(blk) == true)
+	pthread_mutex_lock(&g_lock);
+	if (g_addr != NULL && ptr != NULL)
 	{
-		if (blk->free == true)
-			return ;
-		else
+		blk = (t_block)(ptr - sizeof(struct s_block));
+		if (verify_block(blk) == true)
 		{
-			blk->free = true;
-			unmap_area((t_area)blk->area);
+			if (blk->free != true)
+			{
+				blk->free = true;
+				unmap_area((t_area)blk->area);
+			}
 		}
 	}
+	pthread_mutex_unlock(&g_lock);
 }
