@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         if (dptr[i] == NULL)
             return (1);
         j = 0;
-        while (j < r_size)
+        while (j < r_size / 2)
         {
             dptr[i][j] = (char)(j % (128 - 34) + 33);
             j++;
