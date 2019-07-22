@@ -49,7 +49,7 @@ bool			verify_block(t_block blk)
 	return (false);
 }
 
-void			ft_free(void *ptr)
+void			free(void *ptr)
 {
 	t_block		blk;
 

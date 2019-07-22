@@ -64,10 +64,10 @@ void			show_alloc_mem(void)
 	size_t		total;
 
 	pthread_mutex_lock(&g_lock);
-	total = 0;
 	if (g_addr != NULL)
 		sort_areas((t_area *)&g_addr);
 	area = (t_area)g_addr;
+	total = 0;
 	while (area != NULL)
 	{
 		print_area(area);

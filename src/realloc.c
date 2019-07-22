@@ -9,7 +9,7 @@ void		*unlock_and_return(void *ptr)
 void		*unlock_and_malloc(size_t size)
 {
 	pthread_mutex_unlock(&g_lock);
-	return (ft_malloc(size));
+	return (malloc(size));
 }
 
 void		copy_data(t_block old, t_block new)
@@ -20,7 +20,7 @@ void		copy_data(t_block old, t_block new)
 	ft_memcpy(new->data, old->data, res_size);
 }
 
-void		*ft_realloc(void *ptr, size_t size)
+void		*realloc(void *ptr, size_t size)
 {
 	t_block	block;
 	t_block	new_blk;
@@ -34,7 +34,7 @@ void		*ft_realloc(void *ptr, size_t size)
 	if (size == 0)
 	{
 		pthread_mutex_unlock(&g_lock);
-		ft_free(block->data);
+		free(block->data);
 		return (NULL);
 	}
 	new_blk = get_block((t_area)g_addr, size);
@@ -43,6 +43,6 @@ void		*ft_realloc(void *ptr, size_t size)
 	copy_data(block, new_blk);
 	new_blk->free = false;
 	pthread_mutex_unlock(&g_lock);
-	ft_free(block->data);
+	free(block->data);
 	return (new_blk->data);
 }

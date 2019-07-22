@@ -58,15 +58,15 @@ void			*get_new_area(size_t initial_size)
 	return (ptr);
 }
 
-void			*ft_malloc(size_t size)
+void			*malloc(size_t size)
 {
 	t_area		initial_area;
 	t_block		blk;
 
-	pthread_mutex_lock(&g_lock);
-/*	if (size == 0)
-		return (unlock_and_return(NULL));*/
+	if (size == 0)
+		return (NULL);
 	size = align_size(size, 16);
+	pthread_mutex_lock(&g_lock);
 	if (g_addr)
 		initial_area = (t_area)g_addr;
 	else
@@ -77,9 +77,10 @@ void			*ft_malloc(size_t size)
 		init_block(initial_area, initial_area->first_block, size);
 		g_addr = (void *)initial_area;
 	}
+	pthread_mutex_unlock(&g_lock);
 	blk = get_block(initial_area, size);
 	if (blk == NULL)
-		return (unlock_and_return(NULL));
+		return (NULL);
 	blk->free = false;
-	return (unlock_and_return(blk->data));
+	return (blk->data);
 }

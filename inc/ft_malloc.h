@@ -43,10 +43,10 @@ typedef struct			s_area
 	void				*first_block;
 }						*t_area;
 
-void					*ft_malloc(size_t size);
-void					*ft_realloc(void *ptr, size_t size);
-void					*ft_calloc(size_t count, size_t size);
-void					ft_free(void *ptr);
+void					*malloc(size_t size);
+void					*realloc(void *ptr, size_t size);
+void					*calloc(size_t count, size_t size);
+void					free(void *ptr);
 
 unsigned				get_pages_amount(size_t block_size, size_t page_size);
 size_t					align_size(size_t size, size_t page_size);
