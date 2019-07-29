@@ -16,9 +16,9 @@ int main(void)
     i = 0;
     while (i < Q)
     {
-        small[i] = (char *)ft_malloc(SMALL);
-        large[i] = (char *)ft_malloc(LARGE);
-        tiny[i] = (char *)ft_malloc(i);
+        small[i] = (char *)malloc(SMALL);
+        large[i] = (char *)malloc(LARGE);
+        tiny[i] = (char *)malloc(1);
         if (small[i] == NULL || tiny[i] == NULL || large[i] == NULL)
             return (1);
         j = 0;
@@ -38,17 +38,17 @@ int main(void)
 	
     i = 0;
     while (i < Q)
-        ft_free(tiny[i++]);
+        free(tiny[i++]);
 	ft_putstr("\nfreed tinies\n");
 	show_alloc_mem();
     i = 0;
     while (i < Q)
-        ft_free(small[i++]);
+        free(small[i++]);
 	ft_putstr("\nfreed smalls\n");
 	show_alloc_mem();
     i = 0;
     while (i < Q)
-        ft_free(large[i++]);
+        free(large[i++]);
 	ft_putstr("\nfreed all\n");
 	show_alloc_mem();
 
