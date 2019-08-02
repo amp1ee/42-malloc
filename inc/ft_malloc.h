@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_malloc.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oahieiev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/02 15:49:05 by oahieiev          #+#    #+#             */
+/*   Updated: 2019/08/02 15:49:07 by oahieiev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_MALLOC_H
 # define FT_MALLOC_H
 
@@ -31,7 +43,7 @@ typedef struct			s_block
 	struct s_block		*next;
 	void				*data;
 	bool				free;
-}						*t_block;
+}					*	t_block;
 
 typedef struct			s_area
 {
@@ -41,7 +53,7 @@ typedef struct			s_area
 	size_t				size;
 	t_type				type;
 	void				*first_block;
-}						*t_area;
+}					*	t_area;
 
 void					*malloc(size_t size);
 void					*realloc(void *ptr, size_t size);

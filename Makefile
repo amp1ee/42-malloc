@@ -29,7 +29,13 @@ CFLAGS := -Wall -Wextra -Werror -fPIC -pthread
 ifdef DEBUG
 	CFLAGS += -g
 endif
-LDFLAGS := -lft -L$(LIBFT_D) -shared -Wl,-soname,$(LNAME) -pthread
+
+LDFLAGS := -lft -L$(LIBFT_D) -shared -pthread
+ifneq (, $(findstring Darwin, $(HOSTTYPE)))
+	LDFLAGS += -Wl,-install_name,$(LNAME)
+else
+	LDFLAGS += -Wl,-soname,$(LNAME)
+endif
 
 MAIN ?= test/test001.c
 
@@ -39,7 +45,7 @@ all: $(NAME) $(LNAME)
 
 test: $(NAME)
 	@gcc -g -pthread $(INCLUDES) $(MAIN) -o $(basename $(MAIN)) -lft_malloc -L.
-	@echo "Run using this command\nLD_LIBRARY_PATH=`pwd` $(basename $(MAIN))"
+	@echo "Run using this command\nDYLD_LIBRARY_PATH=`pwd` $(basename $(MAIN))"
 
 $(NAME): $(OBJ) $(LIBFT)
 	@echo "Linking $(NAME)"

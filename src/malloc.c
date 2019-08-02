@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oahieiev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/02 15:37:13 by oahieiev          #+#    #+#             */
+/*   Updated: 2019/08/02 15:37:18 by oahieiev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_malloc.h"
 
 pthread_mutex_t	g_lock = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
@@ -16,7 +28,6 @@ unsigned		get_pages_amount(size_t block_size, size_t page_size)
 
 	num_allocs = 0;
 	num_pages = 0;
-
 	if (block_size == 0 || page_size == 0)
 		return (0);
 	while (num_allocs < MIN_NUM_ALLOCS)

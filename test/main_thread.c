@@ -10,7 +10,7 @@ void	print(char *str)
 	write(1, str, strlen(str));
 }
 
-void *myThreadFun(void *vargp)
+void *thread_runner(void *vargp)
 {
 	char	*str;
 	for (int i = 0; i < 10; i++)
@@ -28,17 +28,17 @@ void *myThreadFun(void *vargp)
 
 int main()
 {
-	pthread_t thread_id[6];
-	for (int i = 0; i < 6; i++)
+	int		T = 21;
+	pthread_t thread_id[T];
+	for (int i = 0; i < T; i++)
 	{
-		pthread_create(&thread_id[i], NULL, myThreadFun, NULL);
+		pthread_create(&thread_id[i], NULL, thread_runner, NULL);
 	}
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < T; i++)
 	{
 		char *ret;
 		if ((pthread_join(thread_id[i], (void **)&ret)) != 0)
 			return (-2);
-		print(ret);
 		free(ret);
 	}
 	return (0);

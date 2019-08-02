@@ -4,3 +4,4 @@ libft/*.o
 .*
 *.so
 *.a
+*.dSYM
