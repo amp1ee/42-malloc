@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oahieiev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/02 15:38:19 by oahieiev          #+#    #+#             */
+/*   Updated: 2019/08/02 15:38:21 by oahieiev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_malloc.h"
 
 void			unmap_area(t_area area)
@@ -49,22 +61,22 @@ bool			verify_block(t_block blk)
 	return (false);
 }
 
-
 void			free(void *ptr)
 {
 	t_block		blk;
 
-	if (g_addr == NULL || ptr == NULL)
-		return ;
-	blk = (t_block)(ptr - sizeof(struct s_block));
-	if (verify_block(blk) == true)
+	pthread_mutex_lock(&g_lock);
+	if (g_addr != NULL && ptr != NULL)
 	{
-		if (blk->free == true)
-			return ;
-		else
+		blk = (t_block)(ptr - sizeof(struct s_block));
+		if (verify_block(blk) == true)
 		{
-			blk->free = true;
-			unmap_area((t_area)blk->area);
+			if (blk->free != true)
+			{
+				blk->free = true;
+				unmap_area((t_area)blk->area);
+			}
 		}
 	}
+	pthread_mutex_unlock(&g_lock);
 }

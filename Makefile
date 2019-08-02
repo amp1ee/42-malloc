@@ -23,11 +23,19 @@ OBJ := $(SRC:$(SRC_D)%.c=$(OBJ_D)%.o)
 
 INC_D := inc/
 
-CFLAGS := -Wall -Wextra -Werror -fPIC
+INCLUDES := -I$(INC_D) -I$(LIBFT_D)
+
+CFLAGS := -Wall -Wextra -Werror -fPIC -pthread
 ifdef DEBUG
 	CFLAGS += -g
 endif
-LDFLAGS := -lft -L$(LIBFT_D) -shared -Wl,-soname,$(LNAME)
+
+LDFLAGS := -lft -L$(LIBFT_D) -shared -pthread
+ifneq (, $(findstring Darwin, $(HOSTTYPE)))
+	LDFLAGS += -Wl,-install_name,$(LNAME)
+else
+	LDFLAGS += -Wl,-soname,$(LNAME)
+endif
 
 MAIN ?= test/test001.c
 
@@ -36,8 +44,8 @@ MAIN ?= test/test001.c
 all: $(NAME) $(LNAME)
 
 test: $(NAME)
-	@gcc -g -I$(INC_D) -I$(LIBFT_D) $(MAIN) -o $(basename $(MAIN)) -lft_malloc -L.
-	@echo "Run using this command\nLD_LIBRARY_PATH=`pwd` $(basename $(MAIN))"
+	@gcc -g -pthread $(INCLUDES) $(MAIN) -o $(basename $(MAIN)) -lft_malloc -L.
+	@echo "Run using this command\nDYLD_LIBRARY_PATH=`pwd` $(basename $(MAIN))"
 
 $(NAME): $(OBJ) $(LIBFT)
 	@echo "Linking $(NAME)"
@@ -50,7 +58,7 @@ $(LNAME): $(NAME)
 $(OBJ_D)%.o: $(SRC_D)%.c
 	@echo "Compiling $<"
 	@mkdir -p $(OBJ_D)
-	@gcc $(CFLAGS) -c $< -o $@ -I$(INC_D) -I$(LIBFT_D)
+	@gcc $(CFLAGS) -c $< -o $@ $(INCLUDES)
 
 $(LIBFT):
 	@make -sC $(LIBFT_D)

@@ -19,7 +19,7 @@ void	self_mem_usage(char *self_name)
 int main(int argc, char *argv[])
 {
     size_t      Q = 14;
-    size_t      i, j;
+    size_t      i;
     char        *dptr[Q];
 	int			r;
 
@@ -40,12 +40,6 @@ int main(int argc, char *argv[])
 			dptr[i] = realloc(dptr[i], r_size / 2);
         if (dptr[i] == NULL)
             return (1);
-        j = 0;
-        while (j < r_size / 2)
-        {
-            dptr[i][j] = (char)(j % (128 - 34) + 33);
-            j++;
-        }
         i++;
     }
 

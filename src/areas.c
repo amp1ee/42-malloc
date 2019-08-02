@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   areas.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oahieiev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/02 15:37:59 by oahieiev          #+#    #+#             */
+/*   Updated: 2019/08/02 15:38:01 by oahieiev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_malloc.h"
 
 void			init_area(void *ptr, size_t res_size, size_t initial_size)
@@ -51,7 +63,7 @@ t_area			find_area(t_area initial_area, size_t size)
 		type = TINY;
 	else if (size <= SMALL_BLOCK)
 		type = SMALL;
-	else	
+	else
 		type = LARGE;
 	cur_area = initial_area;
 	while (cur_area != NULL)

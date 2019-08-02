@@ -1,4 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oahieiev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/02 15:37:13 by oahieiev          #+#    #+#             */
+/*   Updated: 2019/08/02 15:37:18 by oahieiev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_malloc.h"
+
+pthread_mutex_t	g_lock = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 
 size_t			align_size(size_t size, size_t page_size)
 {
@@ -14,7 +28,6 @@ unsigned		get_pages_amount(size_t block_size, size_t page_size)
 
 	num_allocs = 0;
 	num_pages = 0;
-
 	if (block_size == 0 || page_size == 0)
 		return (0);
 	while (num_allocs < MIN_NUM_ALLOCS)
@@ -63,17 +76,19 @@ void			*malloc(size_t size)
 
 	if (size == 0)
 		return (NULL);
+	size = align_size(size, 16);
+	pthread_mutex_lock(&g_lock);
 	if (g_addr)
 		initial_area = (t_area)g_addr;
 	else
 	{
 		initial_area = get_new_area(size);
 		if (initial_area == NULL)
-			return (NULL);
+			return (unlock_and_return(NULL));
 		init_block(initial_area, initial_area->first_block, size);
 		g_addr = (void *)initial_area;
 	}
-	blk = NULL;
+	pthread_mutex_unlock(&g_lock);
 	blk = get_block(initial_area, size);
 	if (blk == NULL)
 		return (NULL);

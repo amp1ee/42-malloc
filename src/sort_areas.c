@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sort_areas.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oahieiev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/02 15:38:42 by oahieiev          #+#    #+#             */
+/*   Updated: 2019/08/02 15:38:44 by oahieiev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_malloc.h"
 
-static t_area	find_min(t_area area) 
+static t_area	find_min(t_area area)
 {
 	t_area		cur;
 	t_area		min;
@@ -12,7 +24,7 @@ static t_area	find_min(t_area area)
 		while (cur != NULL)
 		{
 			if ((size_t)min > (size_t)cur)
-					min = cur;
+				min = cur;
 			cur = cur->next_area;
 		}
 	}

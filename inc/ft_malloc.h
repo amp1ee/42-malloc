@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_malloc.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oahieiev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/02 15:49:05 by oahieiev          #+#    #+#             */
+/*   Updated: 2019/08/02 15:49:07 by oahieiev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_MALLOC_H
 # define FT_MALLOC_H
 
@@ -5,6 +17,7 @@
 # include <unistd.h>
 # include <sys/mman.h>
 # include <stdbool.h>
+# include <pthread.h>
 # include "libft.h"
 
 # define FT_PROT_RW		(PROT_READ | PROT_WRITE)
@@ -14,6 +27,7 @@
 # define SMALL_BLOCK	(4096)
 
 void					*g_addr;
+extern pthread_mutex_t	g_lock;
 
 typedef enum			e_type
 {
@@ -29,7 +43,7 @@ typedef struct			s_block
 	struct s_block		*next;
 	void				*data;
 	bool				free;
-}						*t_block;
+}					*	t_block;
 
 typedef struct			s_area
 {
@@ -39,7 +53,7 @@ typedef struct			s_area
 	size_t				size;
 	t_type				type;
 	void				*first_block;
-}						*t_area;
+}					*	t_area;
 
 void					*malloc(size_t size);
 void					*realloc(void *ptr, size_t size);
@@ -58,6 +72,7 @@ t_block					get_free_block(t_area area, size_t size);
 t_block					get_last_block(t_area area);
 t_block					append_block(t_area area, size_t data_size);
 t_block					get_block(t_area area, size_t size);
+void					*unlock_and_return(void *ptr);
 
 void					init_area(void *ptr, size_t res_size,
 									size_t initial_size);

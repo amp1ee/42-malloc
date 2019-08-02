@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   show_alloc_mem.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oahieiev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/02 15:38:31 by oahieiev          #+#    #+#             */
+/*   Updated: 2019/08/02 15:38:34 by oahieiev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_malloc.h"
 
 static void		print_ptr(size_t ptr)
@@ -63,10 +75,11 @@ void			show_alloc_mem(void)
 	t_block		block;
 	size_t		total;
 
-	total = 0;
+	pthread_mutex_lock(&g_lock);
 	if (g_addr != NULL)
 		sort_areas((t_area *)&g_addr);
 	area = (t_area)g_addr;
+	total = 0;
 	while (area != NULL)
 	{
 		print_area(area);
@@ -82,4 +95,5 @@ void			show_alloc_mem(void)
 	ft_putstr("Total : ");
 	ft_putnbr(total);
 	ft_putendl(" bytes");
+	pthread_mutex_unlock(&g_lock);
 }
