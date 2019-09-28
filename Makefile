@@ -37,15 +37,21 @@ else
 	LDFLAGS += -Wl,-soname,$(LNAME)
 endif
 
-MAIN ?= test/test001.c
+TEST ?= test/test001.c
+elf = $(notdir $(basename $(1)))
+
+YELLW="\033[1;33m"
+GREEN="\033[1;32m"
+RESET="\033[0m"
 
 .PHONY: all clean fclean re test
 
 all: $(NAME) $(LNAME)
 
 test: $(NAME)
-	@gcc -g -pthread $(INCLUDES) $(MAIN) -o $(basename $(MAIN)) -lft_malloc -L.
-	@echo "Run using this command\nDYLD_LIBRARY_PATH=`pwd` $(basename $(MAIN))"
+	@echo "Compiling $(TEST)"
+	@gcc -pthread $(INCLUDES) $(TEST) -o $(call elf, $(TEST)) -lft_malloc -L.
+	@echo "#Run using this command:\vDYLD_LIBRARY_PATH=`pwd` ./$(call elf, $(TEST))"
 
 $(NAME): $(OBJ) $(LIBFT)
 	@echo "Linking $(NAME)"
@@ -54,6 +60,8 @@ $(NAME): $(OBJ) $(LIBFT)
 $(LNAME): $(NAME)
 	@echo "$(LNAME) -> $(NAME)"
 	@ln -sf $(NAME) $(LNAME)
+	@echo $(GREEN)"\nlibft_malloc is ready."
+	@echo "To compile a test binary run:" $(YELLW) "\n\t make test TEST=test/[file].c" $(RESET)
 
 $(OBJ_D)%.o: $(SRC_D)%.c
 	@echo "Compiling $<"
@@ -64,11 +72,14 @@ $(LIBFT):
 	@make -sC $(LIBFT_D)
 
 clean:
+	@echo $(YELLW)"Deleting libft objects..." $(RESET)
 	@make -sC $(LIBFT_D) clean
 	@rm -rf $(OBJ_D)
 
 fclean: clean
-	@make -sC $(LIBFT_D) fclean
+	@echo $(YELLW)"Deleting executables..." $(RESET)
 	@rm -f $(NAME) $(LNAME)
+	@find . -name 'test*' -type f -exec echo {} +
+	@echo $(GREEN)"Cleanup done\n" $(RESET)
 
 re: fclean all

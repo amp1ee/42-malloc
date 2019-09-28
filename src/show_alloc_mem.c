@@ -12,6 +12,10 @@
 
 #include "ft_malloc.h"
 
+#define RED		"\033[0;31m"
+#define YLW		"\033[1;33m"
+#define RST		"\033[0m"
+
 static void		print_ptr(size_t ptr)
 {
 	char		hex[16];
@@ -92,8 +96,8 @@ void			show_alloc_mem(void)
 		}
 		area = area->next_area;
 	}
-	ft_putstr("Total : ");
+	ft_putstr(RED "Total : " YLW);
 	ft_putnbr(total);
-	ft_putendl(" bytes");
+	ft_putendl(RED " bytes" RST);
 	pthread_mutex_unlock(&g_lock);
 }

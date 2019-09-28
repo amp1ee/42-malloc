@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#for $f in `ls test/*.c`; do
-#	make test MAIN=$f;
-#done
+for $f in `ls test/*.c`; do
+	make test TEST=$f;
+done
 
 if [ -n $1 ] ; then
 	[ ! -f $1 ] && exit 255;
