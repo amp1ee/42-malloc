@@ -80,14 +80,14 @@ $(TESTDIR)%.o: $(TESTDIR)%.c
 	@gcc -pthread $(CFLAGS) -c $< -o $@ $(INCLUDES)
 
 clean:
-	@echo $(YELLW)"Deleting libft objects..." $(RESET)
+	@echo $(YELLW)"Deleting object files..." $(RESET)
 	@make -sC $(LIBFT_D) clean
+	@rm -f $(TESTDIR)/*.o
 	@rm -rf $(OBJ_D)
 
 fclean: clean
 	@echo $(YELLW)"Deleting binaries..." $(RESET)
 	@rm -f $(SONAME) $(LNAME)
-	@rm -f $(TESTDIR)/*.o
 	@find . -name 'test*' -maxdepth 1 -type f -exec rm {} +
 	@echo $(GREEN)"Cleanup done\n" $(RESET)
 

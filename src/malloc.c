@@ -14,11 +14,11 @@
 
 pthread_mutex_t	g_lock = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 
-size_t			align_size(size_t size, size_t page_size)
+size_t			align_size(size_t size, size_t alignment)
 {
-	if (page_size == 0 || size == 0)
+	if (alignment == 0 || size == 0)
 		return (0);
-	return ((((size - 1) / page_size) * page_size) + page_size);
+	return ((((size - 1) / alignment) * alignment) + alignment);
 }
 
 unsigned		get_pages_amount(size_t block_size, size_t page_size)

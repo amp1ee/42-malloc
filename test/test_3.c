@@ -17,7 +17,7 @@ int			main(void)
 {
 	char	*tiny;
 
-	tiny = malloc(-100);
+	tiny = calloc(2048, 1024);
 	if (tiny == NULL)
 		return (42);
 	show_alloc_mem();
