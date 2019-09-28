@@ -19,6 +19,7 @@ void			*thread_runner(void *vargp)
 {
 	char		*str;
 
+	(void)vargp;
 	str = malloc(SMALL_BLOCK);
 	if (!str)
 		return (NULL);

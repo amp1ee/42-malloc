@@ -2,7 +2,7 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME = libft_malloc_$(HOSTTYPE).so
+SONAME = libft_malloc_$(HOSTTYPE).so
 LNAME = libft_malloc.so
 
 SRC_D := src/
@@ -37,8 +37,10 @@ else
 	LDFLAGS += -Wl,-soname,$(LNAME)
 endif
 
-TEST ?= test/test_1.c
-elf = $(notdir $(basename $(1)))
+TESTDIR = test/
+TEST ?= $(TESTDIR)test_1.c
+TESTOBJ = $(TEST:$(TESTDIR)%.c=$(TESTDIR)%.o)
+TESTELF = $(notdir $(basename $(TEST)))
 
 YELLW="\033[1;33m"
 GREEN="\033[1;32m"
@@ -46,21 +48,15 @@ RESET="\033[0m"
 
 .PHONY: all clean fclean re test
 
-all: $(NAME) $(LNAME)
+all: $(SONAME) $(LNAME)
 
-test: $(TEST) $(NAME)
-	@echo $(GREEN)"Compiling "$(RESET)"$(TEST)"
-	@gcc -pthread $(INCLUDES) $(TEST) -o $(call elf, $(TEST)) -lft_malloc -L.
-	@echo $(GREEN)"\nRun using this command:" $(RESET)
-	@echo $(YELLW)"\tDYLD_LIBRARY_PATH=`pwd` ./$(call elf, $(TEST))"$(RESET)
+$(SONAME): $(OBJ) $(LIBFT)
+	@echo $(GREEN)"Linking "$(RESET)"$(SONAME)"
+	@gcc $(OBJ) -o $(SONAME) $(LDFLAGS)
 
-$(NAME): $(OBJ) $(LIBFT)
-	@echo $(GREEN)"Linking "$(RESET)"$(NAME)"
-	@gcc $(OBJ) -o $(NAME) $(LDFLAGS)
-
-$(LNAME): $(NAME)
-	@echo "\t$(LNAME) -> $(NAME)"
-	@ln -sf $(NAME) $(LNAME)
+$(LNAME): $(SONAME)
+	@echo "\t$(LNAME) -> $(SONAME)"
+	@ln -sf $(SONAME) $(LNAME)
 	@echo $(GREEN)"\nlibft_malloc is ready."
 	@echo "To compile a test binary run:" $(YELLW) "\n\t make test TEST=test/[file].c" $(RESET)
 
@@ -72,14 +68,26 @@ $(OBJ_D)%.o: $(SRC_D)%.c
 $(LIBFT):
 	@make -sC $(LIBFT_D)
 
+test: $(TESTELF)
+
+$(TESTELF): $(TESTOBJ) $(LNAME)
+	@gcc -pthread $(TESTOBJ) -o $(TESTELF) -lft_malloc -L.
+	@echo $(GREEN)"\nRun test using this command:" $(RESET)
+	@echo $(YELLW)"\tDYLD_LIBRARY_PATH=`pwd` ./$(TESTELF)"$(RESET)
+
+$(TESTDIR)%.o: $(TESTDIR)%.c
+	@echo $(GREEN)"Compiling "$(RESET)"$(TEST)"
+	@gcc -pthread $(CFLAGS) -c $< -o $@ $(INCLUDES)
+
 clean:
 	@echo $(YELLW)"Deleting libft objects..." $(RESET)
 	@make -sC $(LIBFT_D) clean
 	@rm -rf $(OBJ_D)
 
 fclean: clean
-	@echo $(YELLW)"Deleting executables..." $(RESET)
-	@rm -f $(NAME) $(LNAME)
+	@echo $(YELLW)"Deleting binaries..." $(RESET)
+	@rm -f $(SONAME) $(LNAME)
+	@rm -f $(TESTDIR)/*.o
 	@find . -name 'test*' -maxdepth 1 -type f -exec rm {} +
 	@echo $(GREEN)"Cleanup done\n" $(RESET)
 
