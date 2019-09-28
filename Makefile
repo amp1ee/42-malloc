@@ -37,7 +37,7 @@ else
 	LDFLAGS += -Wl,-soname,$(LNAME)
 endif
 
-TEST ?= test/test001.c
+TEST ?= test/test_1.c
 elf = $(notdir $(basename $(1)))
 
 YELLW="\033[1;33m"
@@ -48,23 +48,24 @@ RESET="\033[0m"
 
 all: $(NAME) $(LNAME)
 
-test: $(NAME)
-	@echo "Compiling $(TEST)"
+test: $(TEST) $(NAME)
+	@echo $(GREEN)"Compiling "$(RESET)"$(TEST)"
 	@gcc -pthread $(INCLUDES) $(TEST) -o $(call elf, $(TEST)) -lft_malloc -L.
-	@echo "#Run using this command:\vDYLD_LIBRARY_PATH=`pwd` ./$(call elf, $(TEST))"
+	@echo $(GREEN)"\nRun using this command:" $(RESET)
+	@echo $(YELLW)"\tDYLD_LIBRARY_PATH=`pwd` ./$(call elf, $(TEST))"$(RESET)
 
 $(NAME): $(OBJ) $(LIBFT)
-	@echo "Linking $(NAME)"
+	@echo $(GREEN)"Linking "$(RESET)"$(NAME)"
 	@gcc $(OBJ) -o $(NAME) $(LDFLAGS)
 
 $(LNAME): $(NAME)
-	@echo "$(LNAME) -> $(NAME)"
+	@echo "\t$(LNAME) -> $(NAME)"
 	@ln -sf $(NAME) $(LNAME)
 	@echo $(GREEN)"\nlibft_malloc is ready."
 	@echo "To compile a test binary run:" $(YELLW) "\n\t make test TEST=test/[file].c" $(RESET)
 
 $(OBJ_D)%.o: $(SRC_D)%.c
-	@echo "Compiling $<"
+	@echo $(GREEN)"Compiling "$(RESET)"$<"
 	@mkdir -p $(OBJ_D)
 	@gcc $(CFLAGS) -c $< -o $@ $(INCLUDES)
 
@@ -79,7 +80,7 @@ clean:
 fclean: clean
 	@echo $(YELLW)"Deleting executables..." $(RESET)
 	@rm -f $(NAME) $(LNAME)
-	@find . -name 'test*' -type f -exec echo {} +
+	@find . -name 'test*' -maxdepth 1 -type f -exec rm {} +
 	@echo $(GREEN)"Cleanup done\n" $(RESET)
 
 re: fclean all
