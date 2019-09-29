@@ -30,12 +30,7 @@ ifdef DEBUG
 	CFLAGS += -g
 endif
 
-LDFLAGS := -lft -L$(LIBFT_D) -shared -pthread
-ifneq (, $(findstring Darwin, $(HOSTTYPE)))
-	LDFLAGS += -Wl,-install_name,$(LNAME)
-else
-	LDFLAGS += -Wl,-soname,$(LNAME)
-endif
+LDFLAGS := -lft -L$(LIBFT_D) -shared
 
 TESTDIR = test/
 TEST ?= $(TESTDIR)test_1.c
@@ -71,7 +66,7 @@ $(LIBFT):
 test: $(TESTELF)
 
 $(TESTELF): $(TESTOBJ) $(LNAME)
-	@gcc -pthread $(TESTOBJ) -o $(TESTELF) -lft_malloc -L.
+	@gcc $(TESTOBJ) -o $(TESTELF) -lft_malloc -L.
 	@echo $(GREEN)"\nRun test using this command:" $(RESET)
 	@echo $(YELLW)"\tDYLD_LIBRARY_PATH=`pwd` ./$(TESTELF)"$(RESET)
 
