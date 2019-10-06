@@ -42,7 +42,7 @@ void		*realloc(void *ptr, size_t size)
 		return (unlock_and_malloc(size));
 	block = (t_block)(ptr - sizeof(struct s_block));
 	if (verify_block(block) == false)
-		return (unlock_and_malloc(size));
+		return (unlock_and_return(NULL));
 	if (size == 0)
 	{
 		pthread_mutex_unlock(&g_lock);

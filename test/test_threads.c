@@ -6,7 +6,7 @@
 /*   By: oahieiev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 18:07:32 by oahieiev          #+#    #+#             */
-/*   Updated: 2019/09/28 18:07:33 by oahieiev         ###   ########.fr       */
+/*   Updated: 2019/10/06 15:21:24 by oahieiev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void			*thread_runner(void *vargp)
 
 int				main(void)
 {
-	const int	num_threads = 16;
+	const int	num_threads = 8;
 	pthread_t	thread_id[num_threads];
 	int			i;
 	char		*ret;
