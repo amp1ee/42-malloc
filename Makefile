@@ -67,8 +67,6 @@ test: $(TESTELF)
 
 $(TESTELF): $(TESTOBJ) $(LNAME)
 	@gcc $(TESTOBJ) -o $(TESTELF) -lft_malloc -L.
-	@echo $(GREEN)"\nRun test using this command:" $(RESET)
-	@echo $(YELLW)"\tDYLD_LIBRARY_PATH=`pwd` ./$(TESTELF)"$(RESET)
 
 $(TESTDIR)%.o: $(TESTDIR)%.c
 	@echo $(GREEN)"Compiling "$(RESET)"$(TEST)"
